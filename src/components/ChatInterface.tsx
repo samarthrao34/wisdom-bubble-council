@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Mic, MicOff, Volume2, Copy, Trash2, Moon, Sun, Download, FileText } from 'lucide-react';
+import { Send, Mic, MicOff, Volume2, Copy, Trash2, Moon, Sun, Download, FileText, Pause } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -7,6 +7,8 @@ import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { Advisor, Message } from '@/types/advisor';
 import { geminiService } from '@/services/gemini';
+import { AdvisorFlame } from '@/components/AdvisorFlame';
+import { VoiceControls } from '@/components/VoiceControls';
 import { cn } from '@/lib/utils';
 
 interface ChatInterfaceProps {
@@ -19,6 +21,8 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ advisor, onBack })
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isListening, setIsListening] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [currentSpeechId, setCurrentSpeechId] = useState<string | null>(null);
   const [isDarkMode, setIsDarkMode] = useState(() => {
     return localStorage.getItem('darkMode') === 'true';
   });
@@ -132,12 +136,51 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ advisor, onBack })
     }
   };
 
-  const speakMessage = (text: string) => {
+  const speakMessage = (text: string, messageId: string) => {
     if ('speechSynthesis' in window) {
+      // Stop current speech if any
+      window.speechSynthesis.cancel();
+      
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.rate = 0.9;
       utterance.pitch = 1;
+      utterance.volume = 0.8;
+      
+      utterance.onstart = () => {
+        setIsSpeaking(true);
+        setCurrentSpeechId(messageId);
+      };
+      
+      utterance.onend = () => {
+        setIsSpeaking(false);
+        setCurrentSpeechId(null);
+      };
+      
+      utterance.onerror = () => {
+        setIsSpeaking(false);
+        setCurrentSpeechId(null);
+        toast({
+          title: "Speech error",
+          description: "Could not speak the message.",
+          variant: "destructive",
+        });
+      };
+      
       window.speechSynthesis.speak(utterance);
+    } else {
+      toast({
+        title: "Text-to-speech not supported",
+        description: "Your browser doesn't support text-to-speech.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const stopSpeaking = () => {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+      setCurrentSpeechId(null);
     }
   };
 
@@ -172,28 +215,44 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ advisor, onBack })
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen space-background flex flex-col relative overflow-hidden">
+      {/* Animated Star Field */}
+      <div className="space-stars" />
+      
+      {/* Additional Cosmic Effects */}
+      <div className="absolute inset-0 bg-gradient-to-br from-cosmic-purple/5 via-transparent to-nebula-pink/3" />
       {/* Header */}
-      <div className="glass-card rounded-none border-x-0 border-t-0 p-4 flex items-center justify-between">
+      <div className="glass-card rounded-none border-x-0 border-t-0 p-4 flex items-center justify-between relative z-10">
         <div className="flex items-center gap-4">
           <Button variant="ghost" onClick={onBack}>
             ← Back
           </Button>
           <div className="flex items-center gap-3">
-            <div className={cn(
-              "w-12 h-12 rounded-full flex items-center justify-center text-2xl",
-              advisor.secondaryColor
-            )}>
-              {advisor.emoji}
-            </div>
+            <AdvisorFlame 
+              advisor={advisor}
+              isActive={true}
+              isSpeaking={isSpeaking}
+              className="w-12 h-16"
+            />
             <div>
               <h2 className="font-bold text-lg gradient-text">{advisor.name}</h2>
               <p className="text-sm text-muted-foreground">{advisor.title}</p>
+              {isSpeaking && (
+                <Badge variant="secondary" className="text-xs mt-1 animate-pulse">
+                  Speaking...
+                </Badge>
+              )}
             </div>
           </div>
         </div>
         
         <div className="flex items-center gap-2">
+          <VoiceControls
+            isListening={isListening}
+            isSpeaking={isSpeaking}
+            onToggleListening={isListening ? stopVoiceInput : startVoiceInput}
+            onStopSpeaking={stopSpeaking}
+          />
           <Badge variant="secondary" className="animate-pulse">
             {messageCount} messages
           </Badge>
@@ -211,12 +270,17 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ advisor, onBack })
       </div>
 
       {/* Chat Messages */}
-      <ScrollArea className="flex-1 p-4">
+      <ScrollArea className="flex-1 p-4 relative z-10">
         <div className="max-w-4xl mx-auto space-y-4">
           {messages.length === 0 && (
             <div className="text-center py-12">
-              <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-sky-blue to-wisdom-purple flex items-center justify-center text-4xl animate-float">
-                {advisor.emoji}
+              <div className="mx-auto mb-6">
+                <AdvisorFlame 
+                  advisor={advisor}
+                  isActive={true}
+                  isSpeaking={false}
+                  className="w-20 h-24 mx-auto"
+                />
               </div>
               <h3 className="text-xl font-semibold mb-2 gradient-text">
                 Hello! I'm {advisor.name}
@@ -235,44 +299,80 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ advisor, onBack })
                 message.role === 'user' ? 'justify-end' : 'justify-start'
               )}
             >
-              <div
-                className={cn(
-                  "message-bubble animate-fade-in group-hover:shadow-lg",
-                  message.role === 'user' 
-                    ? 'user-message' 
-                    : 'advisor-message'
+              {/* Message Content with Advisor Flame Avatar */}
+              <div className="flex items-start space-x-3">
+                {message.role === 'advisor' && (
+                  <div className="flex-shrink-0">
+                    <AdvisorFlame 
+                      advisor={advisor}
+                      isActive={true}
+                      isSpeaking={isSpeaking && currentSpeechId === message.id}
+                      className="w-12 h-16"
+                    />
+                  </div>
                 )}
-              >
-                <p className="text-sm leading-relaxed">{message.content}</p>
-                
-                {/* Message Actions */}
-                <div className="opacity-0 group-hover:opacity-100 transition-opacity mt-2 flex gap-1">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => copyMessage(message.content)}
-                    className="h-6 px-2"
-                  >
-                    <Copy className="w-3 h-3" />
-                  </Button>
+                <div
+                  className={cn(
+                    "message-bubble animate-fade-in group-hover:shadow-lg",
+                    message.role === 'user' 
+                      ? 'user-message' 
+                      : 'advisor-message'
+                  )}
+                >
                   {message.role === 'advisor' && (
+                    <div className="text-xs text-muted-foreground mb-1 font-medium flex items-center space-x-2">
+                      <span>{advisor.name}</span>
+                      {isSpeaking && currentSpeechId === message.id && (
+                        <Badge variant="secondary" className="text-xs animate-pulse">
+                          Speaking
+                        </Badge>
+                      )}
+                    </div>
+                  )}
+                  <p className="text-sm leading-relaxed">{message.content}</p>
+                  
+                  {/* Message Actions */}
+                  <div className="opacity-0 group-hover:opacity-100 transition-opacity mt-2 flex gap-1">
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => speakMessage(message.content)}
+                      onClick={() => copyMessage(message.content)}
                       className="h-6 px-2"
                     >
-                      <Volume2 className="w-3 h-3" />
+                      <Copy className="w-3 h-3" />
                     </Button>
-                  )}
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => deleteMessage(message.id)}
-                    className="h-6 px-2 text-destructive"
-                  >
-                    <Trash2 className="w-3 h-3" />
-                  </Button>
+                    {message.role === 'advisor' && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => {
+                          if (isSpeaking && currentSpeechId === message.id) {
+                            stopSpeaking();
+                          } else {
+                            speakMessage(message.content, message.id);
+                          }
+                        }}
+                        className={cn(
+                          "h-6 px-2",
+                          isSpeaking && currentSpeechId === message.id && "animate-pulse"
+                        )}
+                      >
+                        {isSpeaking && currentSpeechId === message.id ? (
+                          <Pause className="w-3 h-3" />
+                        ) : (
+                          <Volume2 className="w-3 h-3" />
+                        )}
+                      </Button>
+                    )}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => deleteMessage(message.id)}
+                      className="h-6 px-2 text-destructive"
+                    >
+                      <Trash2 className="w-3 h-3" />
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -294,7 +394,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ advisor, onBack })
       </ScrollArea>
 
       {/* Input Area */}
-      <div className="glass-card rounded-none border-x-0 border-b-0 p-4">
+      <div className="glass-card rounded-none border-x-0 border-b-0 p-4 relative z-10">
         <div className="max-w-4xl mx-auto">
           {/* Quick Templates */}
           <div className="mb-3 flex gap-2 flex-wrap">

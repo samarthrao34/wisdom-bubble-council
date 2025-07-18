@@ -62,11 +62,15 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// AI Council Custom Colors
+				// AI Council Space Theme Colors
 				'wisdom-purple': 'hsl(var(--wisdom-purple))',
 				'sky-blue': 'hsl(var(--sky-blue))',
 				'magic-glow': 'hsl(var(--magic-glow))',
 				'floating-shadow': 'hsl(var(--floating-shadow))',
+				'flame-core': 'hsl(var(--flame-core))',
+				'flame-outer': 'hsl(var(--flame-outer))',
+				'cosmic-purple': 'hsl(var(--cosmic-purple))',
+				'nebula-pink': 'hsl(var(--nebula-pink))',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -120,10 +124,12 @@ export default {
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				float: 'float 6s ease-in-out infinite',
-				sparkle: 'sparkle 2s ease-in-out infinite',
+				float: 'smoothFloat 8s ease-in-out infinite',
+				sparkle: 'cosmicSparkle 3s ease-in-out infinite',
 				typing: 'typing 1.4s ease-in-out infinite',
-				glow: 'glow 2s ease-in-out infinite',
+				glow: 'cosmicGlow 2s ease-in-out infinite',
+				twinkle: 'twinkle 4s ease-in-out infinite alternate',
+				'flame-flicker': 'flameFlicker 2s ease-in-out infinite',
 				'fade-in': 'fade-in 0.3s ease-out',
 				'slide-up': 'slide-up 0.3s ease-out'
 			}

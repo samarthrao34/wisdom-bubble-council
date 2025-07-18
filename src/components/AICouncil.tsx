@@ -70,12 +70,34 @@ export const AICouncil: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/20 relative overflow-hidden">
-      {/* Background floating elements */}
+    <div className="min-h-screen space-background relative overflow-hidden">
+      {/* Animated Star Field */}
+      <div className="space-stars" />
+      
+      {/* Additional Cosmic Effects */}
+      <div className="absolute inset-0 bg-gradient-to-br from-cosmic-purple/10 via-transparent to-nebula-pink/5" />
+      
+      {/* Floating Cosmic Elements */}
+      {Array.from({ length: 25 }).map((_, i) => (
+        <div
+          key={i}
+          className="sparkle"
+          style={{
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+            animationDelay: `${Math.random() * 3}s`,
+          }}
+        >
+          {['✨', '⭐', '✦', '🌟', '💫'][Math.floor(Math.random() * 5)]}
+        </div>
+      ))}
+      
+      {/* Cosmic Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-sky-blue/5 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-wisdom-purple/5 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
-        <div className="absolute top-1/3 right-1/3 w-48 h-48 bg-magic-glow/10 rounded-full blur-2xl animate-float" style={{ animationDelay: '4s' }} />
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-sky-blue/10 rounded-full blur-3xl animate-float" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-wisdom-purple/15 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-1/3 right-1/3 w-48 h-48 bg-magic-glow/20 rounded-full blur-2xl animate-float" style={{ animationDelay: '4s' }} />
+        <div className="absolute bottom-1/2 left-1/2 w-72 h-72 bg-cosmic-purple/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '6s' }} />
       </div>
 
       <div className="relative z-10">

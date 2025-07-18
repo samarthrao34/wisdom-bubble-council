@@ -8,47 +8,51 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* AI Council Theme - Magical sky blue and wisdom purple */
-    --background: 220 25% 97%;
-    --foreground: 230 15% 15%;
+    /* AI Council Theme - Deep Space with mystical colors */
+    --background: 240 15% 5%;
+    --foreground: 200 50% 95%;
 
-    --card: 220 30% 99%;
-    --card-foreground: 230 15% 15%;
+    --card: 240 20% 8%;
+    --card-foreground: 200 50% 95%;
 
-    --popover: 220 30% 99%;
-    --popover-foreground: 230 15% 15%;
+    --popover: 240 20% 8%;
+    --popover-foreground: 200 50% 95%;
 
-    --primary: 240 60% 50%;
-    --primary-foreground: 220 30% 99%;
+    --primary: 200 80% 60%;
+    --primary-foreground: 240 15% 5%;
 
-    --secondary: 200 80% 85%;
-    --secondary-foreground: 230 15% 15%;
+    --secondary: 240 30% 15%;
+    --secondary-foreground: 200 50% 95%;
 
-    --muted: 220 20% 90%;
-    --muted-foreground: 230 10% 50%;
+    --muted: 240 20% 12%;
+    --muted-foreground: 200 30% 70%;
 
-    --accent: 200 80% 85%;
-    --accent-foreground: 230 15% 15%;
+    --accent: 280 60% 50%;
+    --accent-foreground: 200 50% 95%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 220 25% 85%;
-    --input: 220 25% 85%;
-    --ring: 240 60% 50%;
+    --border: 240 25% 20%;
+    --input: 240 25% 15%;
+    --ring: 200 80% 60%;
 
     --radius: 1rem;
     
-    /* AI Council Custom Colors */
-    --wisdom-purple: 260 60% 45%;
-    --sky-blue: 200 80% 60%;
-    --magic-glow: 200 90% 80%;
-    --floating-shadow: 220 30% 20%;
+    /* AI Council Space Theme Colors */
+    --wisdom-purple: 280 70% 60%;
+    --sky-blue: 200 90% 70%;
+    --magic-glow: 200 100% 80%;
+    --floating-shadow: 240 50% 3%;
+    --flame-core: 45 100% 70%;
+    --flame-outer: 200 80% 60%;
+    --cosmic-purple: 280 60% 50%;
+    --nebula-pink: 320 70% 60%;
     
-    /* Glassmorphism */
-    --glass-bg: 220 30% 99%;
-    --glass-border: 220 25% 85%;
-    --glass-shadow: 220 30% 20%;
+    /* Space Glassmorphism */
+    --glass-bg: 240 20% 8%;
+    --glass-border: 240 25% 20%;
+    --glass-shadow: 240 50% 3%;
 
     --sidebar-background: 0 0% 98%;
 
@@ -68,9 +72,9 @@ All colors MUST be HSL.
   }
 
   .dark {
-    /* Dark AI Council Theme */
-    --background: 230 20% 8%;
-    --foreground: 220 20% 95%;
+    /* Dark AI Council Theme - Already space themed */
+    --background: 240 15% 5%;
+    --foreground: 200 50% 95%;
 
     --card: 230 18% 12%;
     --card-foreground: 220 20% 95%;
@@ -121,31 +125,62 @@ All colors MUST be HSL.
 }
 
 @layer utilities {
-  /* AI Council Custom Utilities */
+  /* AI Council Space Theme Utilities */
   .glass-card {
-    @apply bg-card/80 backdrop-blur-xl border border-border/30 shadow-2xl;
+    @apply bg-card/60 backdrop-blur-xl border border-border/20 shadow-2xl;
+    box-shadow: 0 8px 32px hsl(var(--floating-shadow) / 0.8), 
+                0 0 20px hsl(var(--magic-glow) / 0.3),
+                inset 0 1px 0 hsl(var(--border) / 0.3);
+  }
+  
+  .space-background {
+    background: radial-gradient(ellipse at top, hsl(var(--cosmic-purple) / 0.3) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom, hsl(var(--nebula-pink) / 0.2) 0%, transparent 50%),
+                hsl(var(--background));
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .space-stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+      radial-gradient(2px 2px at 20px 30px, hsl(var(--magic-glow)), transparent),
+      radial-gradient(2px 2px at 40px 70px, hsl(var(--sky-blue) / 0.8), transparent),
+      radial-gradient(1px 1px at 90px 40px, hsl(var(--wisdom-purple) / 0.6), transparent),
+      radial-gradient(1px 1px at 130px 80px, hsl(var(--magic-glow) / 0.8), transparent),
+      radial-gradient(2px 2px at 160px 30px, hsl(var(--nebula-pink) / 0.7), transparent);
+    background-repeat: repeat;
+    background-size: 200px 100px;
+    animation: twinkle 4s ease-in-out infinite alternate;
   }
   
   .floating-bubble {
-    @apply relative rounded-full p-6 cursor-pointer transition-all duration-500 ease-out;
-    background: linear-gradient(135deg, hsl(var(--sky-blue)) 0%, hsl(var(--wisdom-purple)) 100%);
-    box-shadow: 0 8px 32px hsl(var(--floating-shadow) / 0.3), 
-                0 0 20px hsl(var(--magic-glow) / 0.5);
+    @apply relative rounded-full p-6 cursor-pointer transition-all duration-700 ease-out;
+    background: linear-gradient(135deg, hsl(var(--sky-blue) / 0.9) 0%, hsl(var(--wisdom-purple) / 0.9) 100%);
+    box-shadow: 0 8px 32px hsl(var(--floating-shadow) / 0.6), 
+                0 0 40px hsl(var(--magic-glow) / 0.4),
+                inset 0 1px 0 hsl(var(--magic-glow) / 0.3);
+    border: 1px solid hsl(var(--border) / 0.3);
   }
   
   .floating-bubble:hover {
-    transform: translateY(-8px) scale(1.05);
-    box-shadow: 0 16px 40px hsl(var(--floating-shadow) / 0.4), 
-                0 0 30px hsl(var(--magic-glow) / 0.8);
+    transform: translateY(-12px) scale(1.08);
+    box-shadow: 0 20px 60px hsl(var(--floating-shadow) / 0.8), 
+                0 0 60px hsl(var(--magic-glow) / 0.6),
+                inset 0 1px 0 hsl(var(--magic-glow) / 0.5);
   }
   
   .floating-animation {
-    animation: float 6s ease-in-out infinite;
+    animation: smoothFloat 8s ease-in-out infinite;
   }
   
   .sparkle {
     @apply absolute pointer-events-none;
-    animation: sparkle 2s ease-in-out infinite;
+    animation: cosmicSparkle 3s ease-in-out infinite;
   }
   
   .message-bubble {
@@ -178,16 +213,24 @@ All colors MUST be HSL.
 }
 
 @layer keyframes {
-  @keyframes float {
+  @keyframes smoothFloat {
     0%, 100% { transform: translateY(0px) rotate(0deg); }
-    25% { transform: translateY(-10px) rotate(1deg); }
-    50% { transform: translateY(-5px) rotate(0deg); }
-    75% { transform: translateY(-15px) rotate(-1deg); }
+    25% { transform: translateY(-15px) rotate(2deg); }
+    50% { transform: translateY(-8px) rotate(0deg); }
+    75% { transform: translateY(-20px) rotate(-2deg); }
   }
   
-  @keyframes sparkle {
-    0%, 100% { opacity: 0; transform: scale(0.5) rotate(0deg); }
-    50% { opacity: 1; transform: scale(1) rotate(180deg); }
+  @keyframes cosmicSparkle {
+    0%, 100% { opacity: 0; transform: scale(0.3) rotate(0deg); }
+    25% { opacity: 0.6; transform: scale(0.8) rotate(90deg); }
+    50% { opacity: 1; transform: scale(1.2) rotate(180deg); }
+    75% { opacity: 0.6; transform: scale(0.8) rotate(270deg); }
+  }
+  
+  @keyframes twinkle {
+    0% { opacity: 0.3; }
+    50% { opacity: 1; }
+    100% { opacity: 0.3; }
   }
   
   @keyframes typing {
@@ -195,8 +238,15 @@ All colors MUST be HSL.
     30% { transform: translateY(-10px); opacity: 1; }
   }
   
-  @keyframes glow {
-    0%, 100% { box-shadow: 0 0 5px hsl(var(--magic-glow) / 0.5); }
-    50% { box-shadow: 0 0 20px hsl(var(--magic-glow) / 0.8); }
+  @keyframes cosmicGlow {
+    0%, 100% { box-shadow: 0 0 10px hsl(var(--magic-glow) / 0.5), 0 0 20px hsl(var(--cosmic-purple) / 0.3); }
+    50% { box-shadow: 0 0 30px hsl(var(--magic-glow) / 0.8), 0 0 40px hsl(var(--cosmic-purple) / 0.6); }
+  }
+  
+  @keyframes flameFlicker {
+    0%, 100% { transform: scaleY(1) scaleX(1); }
+    25% { transform: scaleY(1.1) scaleX(0.95); }
+    50% { transform: scaleY(0.95) scaleX(1.05); }
+    75% { transform: scaleY(1.05) scaleX(0.98); }
   }
 }
