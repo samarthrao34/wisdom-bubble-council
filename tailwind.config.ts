@@ -61,7 +61,12 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				// AI Council Custom Colors
+				'wisdom-purple': 'hsl(var(--wisdom-purple))',
+				'sky-blue': 'hsl(var(--sky-blue))',
+				'magic-glow': 'hsl(var(--magic-glow))',
+				'floating-shadow': 'hsl(var(--floating-shadow))',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -84,11 +89,43 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				float: {
+					'0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+					'25%': { transform: 'translateY(-10px) rotate(1deg)' },
+					'50%': { transform: 'translateY(-5px) rotate(0deg)' },
+					'75%': { transform: 'translateY(-15px) rotate(-1deg)' }
+				},
+				sparkle: {
+					'0%, 100%': { opacity: '0', transform: 'scale(0.5) rotate(0deg)' },
+					'50%': { opacity: '1', transform: 'scale(1) rotate(180deg)' }
+				},
+				typing: {
+					'0%, 60%, 100%': { transform: 'translateY(0)', opacity: '0.4' },
+					'30%': { transform: 'translateY(-10px)', opacity: '1' }
+				},
+				glow: {
+					'0%, 100%': { boxShadow: '0 0 5px hsl(var(--magic-glow) / 0.5)' },
+					'50%': { boxShadow: '0 0 20px hsl(var(--magic-glow) / 0.8)' }
+				},
+				'fade-in': {
+					'0%': { opacity: '0', transform: 'translateY(10px)' },
+					'100%': { opacity: '1', transform: 'translateY(0)' }
+				},
+				'slide-up': {
+					'0%': { transform: 'translateY(100%)', opacity: '0' },
+					'100%': { transform: 'translateY(0)', opacity: '1' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				float: 'float 6s ease-in-out infinite',
+				sparkle: 'sparkle 2s ease-in-out infinite',
+				typing: 'typing 1.4s ease-in-out infinite',
+				glow: 'glow 2s ease-in-out infinite',
+				'fade-in': 'fade-in 0.3s ease-out',
+				'slide-up': 'slide-up 0.3s ease-out'
 			}
 		}
 	},

@@ -8,35 +8,47 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* AI Council Theme - Magical sky blue and wisdom purple */
+    --background: 220 25% 97%;
+    --foreground: 230 15% 15%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 220 30% 99%;
+    --card-foreground: 230 15% 15%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 220 30% 99%;
+    --popover-foreground: 230 15% 15%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 240 60% 50%;
+    --primary-foreground: 220 30% 99%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 200 80% 85%;
+    --secondary-foreground: 230 15% 15%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 220 20% 90%;
+    --muted-foreground: 230 10% 50%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 200 80% 85%;
+    --accent-foreground: 230 15% 15%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 220 25% 85%;
+    --input: 220 25% 85%;
+    --ring: 240 60% 50%;
 
-    --radius: 0.5rem;
+    --radius: 1rem;
+    
+    /* AI Council Custom Colors */
+    --wisdom-purple: 260 60% 45%;
+    --sky-blue: 200 80% 60%;
+    --magic-glow: 200 90% 80%;
+    --floating-shadow: 220 30% 20%;
+    
+    /* Glassmorphism */
+    --glass-bg: 220 30% 99%;
+    --glass-border: 220 25% 85%;
+    --glass-shadow: 220 30% 20%;
 
     --sidebar-background: 0 0% 98%;
 
@@ -56,41 +68,45 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    /* Dark AI Council Theme */
+    --background: 230 20% 8%;
+    --foreground: 220 20% 95%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 230 18% 12%;
+    --card-foreground: 220 20% 95%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 230 18% 12%;
+    --popover-foreground: 220 20% 95%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 260 70% 60%;
+    --primary-foreground: 220 20% 95%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 200 60% 25%;
+    --secondary-foreground: 220 20% 95%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 230 15% 20%;
+    --muted-foreground: 220 10% 60%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 200 60% 25%;
+    --accent-foreground: 220 20% 95%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --border: 230 15% 25%;
+    --input: 230 15% 25%;
+    --ring: 260 70% 60%;
+    
+    /* Dark AI Council Custom Colors */
+    --wisdom-purple: 260 70% 60%;
+    --sky-blue: 200 70% 50%;
+    --magic-glow: 200 80% 70%;
+    --floating-shadow: 230 30% 5%;
+    
+    /* Dark Glassmorphism */
+    --glass-bg: 230 18% 12%;
+    --glass-border: 230 15% 25%;
+    --glass-shadow: 230 30% 5%;
   }
 }
 
@@ -101,5 +117,86 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  /* AI Council Custom Utilities */
+  .glass-card {
+    @apply bg-card/80 backdrop-blur-xl border border-border/30 shadow-2xl;
+  }
+  
+  .floating-bubble {
+    @apply relative rounded-full p-6 cursor-pointer transition-all duration-500 ease-out;
+    background: linear-gradient(135deg, hsl(var(--sky-blue)) 0%, hsl(var(--wisdom-purple)) 100%);
+    box-shadow: 0 8px 32px hsl(var(--floating-shadow) / 0.3), 
+                0 0 20px hsl(var(--magic-glow) / 0.5);
+  }
+  
+  .floating-bubble:hover {
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: 0 16px 40px hsl(var(--floating-shadow) / 0.4), 
+                0 0 30px hsl(var(--magic-glow) / 0.8);
+  }
+  
+  .floating-animation {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  .sparkle {
+    @apply absolute pointer-events-none;
+    animation: sparkle 2s ease-in-out infinite;
+  }
+  
+  .message-bubble {
+    @apply rounded-2xl px-4 py-3 max-w-xs transition-all duration-300;
+  }
+  
+  .user-message {
+    @apply bg-primary text-primary-foreground ml-auto;
+  }
+  
+  .advisor-message {
+    @apply bg-card text-card-foreground border border-border/30;
+  }
+  
+  .typing-indicator {
+    @apply flex space-x-1;
+  }
+  
+  .typing-dot {
+    @apply w-2 h-2 bg-muted-foreground rounded-full;
+    animation: typing 1.4s ease-in-out infinite;
+  }
+  
+  .gradient-text {
+    background: linear-gradient(135deg, hsl(var(--wisdom-purple)), hsl(var(--sky-blue)));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+@layer keyframes {
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    25% { transform: translateY(-10px) rotate(1deg); }
+    50% { transform: translateY(-5px) rotate(0deg); }
+    75% { transform: translateY(-15px) rotate(-1deg); }
+  }
+  
+  @keyframes sparkle {
+    0%, 100% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+    50% { opacity: 1; transform: scale(1) rotate(180deg); }
+  }
+  
+  @keyframes typing {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+    30% { transform: translateY(-10px); opacity: 1; }
+  }
+  
+  @keyframes glow {
+    0%, 100% { box-shadow: 0 0 5px hsl(var(--magic-glow) / 0.5); }
+    50% { box-shadow: 0 0 20px hsl(var(--magic-glow) / 0.8); }
   }
 }
